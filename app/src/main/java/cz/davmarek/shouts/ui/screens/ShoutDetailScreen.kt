@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import cz.davmarek.shouts.ui.components.NavigationBackButton
 import cz.davmarek.shouts.viewmodels.ShoutDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,16 +44,16 @@ fun ShoutDetailScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        navController?.popBackStack()
-                    }) {
-                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Back")
-                    }
+                    NavigationBackButton(
+                        onClick = {
+                            navController?.popBackStack()
+                        }
+                    )
                 }
 
             )
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
         Column(
             Modifier
                 .fillMaxSize()
