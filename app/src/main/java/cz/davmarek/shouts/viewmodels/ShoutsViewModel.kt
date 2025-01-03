@@ -1,21 +1,47 @@
 package cz.davmarek.shouts.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import cz.davmarek.shouts.api.RetrofitInstance
+import cz.davmarek.shouts.api.ShoutsApi
+import cz.davmarek.shouts.repositories.ShoutsRepository
 import cz.davmarek.shouts.viewstates.ShoutsViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class ShoutsViewModel : ViewModel() {
+    private val booksRepository = ShoutsRepository(RetrofitInstance.shoutsApi)
+
     private val _viewState = MutableStateFlow(ShoutsViewState())
     val viewState: StateFlow<ShoutsViewState> = _viewState.asStateFlow()
 
     init {
+        // fetchShoutsMock()
         fetchShouts()
     }
 
     private fun fetchShouts() {
+        viewModelScope.launch {
+            _viewState.update { it.copy(isLoading = true) }
+            try {
+                val shouts = booksRepository.getShouts()
+                _viewState.update {
+                    it.copy(shoutsList = shouts)
+                }
+            } catch (e: Exception) {
+                Log.e("ShoutsViewModel", "Error fetching shouts", e)
+            }
+            _viewState.update { it.copy(isLoading = false) }
+
+        }
+
+    }
+
+    private fun fetchShoutsMock() {
         val list = listOf(
             "Shout 1",
             "Shout 2",
@@ -68,8 +94,8 @@ class ShoutsViewModel : ViewModel() {
             "Shout 49",
             "Shout 50"
         )
-        _viewState.update {
-            it.copy(shoutsList = list)
-        }
+//        _viewState.update {
+//            it.copy(shoutsList = list)
+//        }
     }
 }
