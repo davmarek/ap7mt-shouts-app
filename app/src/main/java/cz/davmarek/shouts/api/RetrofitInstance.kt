@@ -8,9 +8,15 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
 
+    private var tokenProvider: () -> String? = { null }
+
+    fun setTokenProvider(tokenProvider: () -> String?) {
+        this.tokenProvider = tokenProvider
+    }
+
     private val okHttpClient by lazy {
         OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor("your_token"))
+            .addInterceptor(AuthInterceptor(tokenProvider))
             .connectTimeout(15, TimeUnit.SECONDS)
             .build()
     }

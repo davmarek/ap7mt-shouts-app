@@ -1,15 +1,19 @@
 package cz.davmarek.shouts.viewmodels
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.davmarek.shouts.api.RetrofitInstance
 import cz.davmarek.shouts.api.ShoutsApi
 import cz.davmarek.shouts.repositories.ShoutsRepository
 import cz.davmarek.shouts.viewstates.ShoutsViewState
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,6 +28,12 @@ class ShoutsViewModel : ViewModel() {
         fetchShouts()
     }
 
+    fun setContext(context: Context) {
+        _viewState.update {
+            it.copy(context = context)
+        }
+    }
+
     private fun fetchShouts() {
         viewModelScope.launch {
             _viewState.update { it.copy(isLoading = true) }
@@ -32,13 +42,50 @@ class ShoutsViewModel : ViewModel() {
                 _viewState.update {
                     it.copy(shoutsList = shouts)
                 }
+                _viewState.value.context?.let {
+                    Toast.makeText(it, "Shouts fetched", Toast.LENGTH_SHORT).show()
+                }
             } catch (e: Exception) {
-                Log.e("ShoutsViewModel", "Error fetching shouts", e)
+                Log.e("ShoutsViewModel", "Error fetching shouts ${e.toString()}", e)
+                _viewState.value.context?.let {
+                    Toast.makeText(it, "Fetching error $e", Toast.LENGTH_SHORT).show()
+                }
             }
             _viewState.update { it.copy(isLoading = false) }
 
+
         }
 
+    }
+
+
+    fun searchShouts() {
+        viewModelScope.launch {
+            _viewState.update { it.copy(isLoading = true) }
+            try {
+                val shouts = booksRepository.getShouts()
+                _viewState.update {
+                    it.copy(shoutsList = shouts)
+                }
+                _viewState.value.context?.let {
+                    Toast.makeText(it, "Shouts fetched", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.e("ShoutsViewModel", "Error fetching shouts", e)
+                _viewState.value.context?.let {
+                    Toast.makeText(it, "Fetching error $e", Toast.LENGTH_SHORT).show()
+                }
+            }
+            _viewState.update { it.copy(isLoading = false) }
+
+
+        }
+    }
+
+    fun onSearchChanged(search: String) {
+        _viewState.update {
+            it.copy(search = search)
+        }
     }
 
     private fun fetchShoutsMock() {
