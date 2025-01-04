@@ -7,7 +7,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ShoutsApi {
-    @GET("coffee/hot")
+    @GET("shouts")
     suspend fun getShouts(): List<Shout>
 
     // https://api.sampleapis.com/coffee/hot/search?query=espresso

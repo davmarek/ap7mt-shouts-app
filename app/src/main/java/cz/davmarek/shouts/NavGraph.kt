@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import cz.davmarek.shouts.ui.screens.LoginScreen
 import cz.davmarek.shouts.ui.screens.ShoutDetailScreen
 import cz.davmarek.shouts.ui.screens.ShoutsScreen
+import cz.davmarek.shouts.viewmodels.LoginViewModel
 import cz.davmarek.shouts.viewmodels.ShoutDetailViewModel
 import cz.davmarek.shouts.viewmodels.ShoutsViewModel
 
@@ -14,14 +15,21 @@ import cz.davmarek.shouts.viewmodels.ShoutsViewModel
 fun AppNavGraph(
     navController: NavHostController,
     startDestination: String,
+    loginViewModel: LoginViewModel,
     shoutsViewModel: ShoutsViewModel,
     shoutDetailViewModel: ShoutDetailViewModel,
-
-    ) {
+) {
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
+        composable("LoginScreen") {
+            LoginScreen(
+                navController = navController,
+                viewModel = loginViewModel
+            )
+        }
+
         composable("ShoutsScreen") {
             ShoutsScreen(
                 navController = navController,
@@ -39,11 +47,6 @@ fun AppNavGraph(
         }
 
 
-        composable("LoginScreen") {
-            LoginScreen(
-                navController = navController,
 
-                )
-        }
     }
 }

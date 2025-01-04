@@ -5,26 +5,45 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cz.davmarek.shouts.SessionManager
 import cz.davmarek.shouts.api.RetrofitInstance
-import cz.davmarek.shouts.models.Shout
+import cz.davmarek.shouts.api.ShoutsApi
+import cz.davmarek.shouts.repositories.AuthRepository
 import cz.davmarek.shouts.repositories.ShoutsRepository
+import cz.davmarek.shouts.viewstates.LoginViewState
 import cz.davmarek.shouts.viewstates.ShoutsViewState
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ShoutsViewModel : ViewModel() {
-    private val booksRepository = ShoutsRepository(RetrofitInstance.shoutsApi)
+class LoginViewModel : ViewModel() {
+    private val authRepository = AuthRepository(RetrofitInstance.authApi)
 
-    private val _viewState = MutableStateFlow(ShoutsViewState())
-    val viewState: StateFlow<ShoutsViewState> = _viewState.asStateFlow()
+    private val _viewState = MutableStateFlow(LoginViewState())
+    val viewState = _viewState.asStateFlow()
+
+    private val _navigateToMain = MutableStateFlow(false)
+    val navigateToMain = _navigateToMain.asStateFlow()
 
 
-    fun onSearchChanged(search: String) {
+
+    init {
+        // fetchShouts()
+    }
+
+    fun onUsernameChanged(username: String) {
         _viewState.update {
-            it.copy(search = search)
+            it.copy(username = username)
+        }
+    }
+
+    fun onPasswordChanged(password: String) {
+        _viewState.update {
+            it.copy(password = password)
         }
     }
 
@@ -34,66 +53,51 @@ class ShoutsViewModel : ViewModel() {
         }
     }
 
-    private fun setIsLoading(isLoading: Boolean) {
-        _viewState.update {
-            it.copy(isLoading = isLoading)
-        }
-    }
-
-    private fun setShouts(shouts: List<Shout>) {
-        _viewState.update {
-            it.copy(shouts = shouts)
-        }
-    }
-
-    fun fetchShouts() {
-        viewModelScope.launch {
-
-            setIsLoading(true)
-            try {
-                val shouts = booksRepository.getShouts()
-                setShouts(shouts)
-                showToast("Shouts fetched")
-            } catch (e: Exception) {
-                Log.e("ShoutsViewModel", "Error fetching shouts ${e.toString()}", e)
-                showToast("Fetching error $e")
-            }
-            setIsLoading(false)
-        }
-
-    }
-
-    private fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
-        _viewState.value.context?.let {
-            Toast.makeText(it, message, duration).show()
-        }
-
-    }
-
-
-    fun searchShouts() {
+    fun onSubmit(){
         viewModelScope.launch {
             _viewState.update { it.copy(isLoading = true) }
             try {
-                val shouts = booksRepository.getShouts()
+                val token = authRepository.login(_viewState.value.username, _viewState.value.password)
                 _viewState.update {
-                    it.copy(shouts = shouts)
+                    it.copy(isLoading = false)
                 }
                 _viewState.value.context?.let {
-                    Toast.makeText(it, "Shouts fetched", Toast.LENGTH_SHORT).show()
+                    SessionManager(it).saveAuthToken(token)
                 }
+                _navigateToMain.update { true }
             } catch (e: Exception) {
-                Log.e("ShoutsViewModel", "Error fetching shouts", e)
+                Log.e("LoginViewModel", "Error logging in ${e.toString()}", e)
                 _viewState.value.context?.let {
-                    Toast.makeText(it, "Fetching error $e", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(it, "Login error $e", Toast.LENGTH_LONG).show()
                 }
             }
             _viewState.update { it.copy(isLoading = false) }
-
-
         }
     }
 
+    private fun fetchShouts() {
+//        viewModelScope.launch {
+//            _viewState.update { it.copy(isLoading = true) }
+//            try {
+//                val shouts = booksRepository.getShouts()
+//                _viewState.update {
+//                    it.copy(shoutsList = shouts)
+//                }
+//                _viewState.value.context?.let {
+//                    Toast.makeText(it, "Shouts fetched", Toast.LENGTH_SHORT).show()
+//                }
+//            } catch (e: Exception) {
+//                Log.e("ShoutsViewModel", "Error fetching shouts ${e.toString()}", e)
+//                _viewState.value.context?.let {
+//                    Toast.makeText(it, "Fetching error $e", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//            _viewState.update { it.copy(isLoading = false) }
+//
+//
+//        }
+
+    }
 
 
     private fun fetchShoutsMock() {

@@ -1,13 +1,10 @@
 package cz.davmarek.shouts.ui.screens
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,12 +13,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,7 +27,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -61,8 +54,9 @@ fun ShoutsScreen(
     val focusManager = LocalFocusManager.current
 
     val context = LocalContext.current
-    LaunchedEffect(context) {
+    LaunchedEffect(Unit) {
         viewModel.setContext(context)
+        viewModel.fetchShouts()
     }
 
     Scaffold(
@@ -166,7 +160,7 @@ fun ShoutsScreen(
                     .padding(top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(viewState.value.shoutsList) { shout ->
+                items(viewState.value.shouts) { shout ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -177,7 +171,7 @@ fun ShoutsScreen(
 
                     ) {
                         Text(
-                            text = shout.title,
+                            text = shout.text,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp),

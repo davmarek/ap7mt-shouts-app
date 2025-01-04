@@ -17,11 +17,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import cz.davmarek.shouts.api.RetrofitInstance
 import cz.davmarek.shouts.ui.theme.ShoutsTheme
+import cz.davmarek.shouts.viewmodels.LoginViewModel
 import cz.davmarek.shouts.viewmodels.ShoutDetailViewModel
 import cz.davmarek.shouts.viewmodels.ShoutsViewModel
 
 class MainActivity : ComponentActivity() {
 
+    private lateinit var loginViewModel: LoginViewModel
     private lateinit var shoutsViewModel: ShoutsViewModel
     private lateinit var shoutDetailViewModel: ShoutDetailViewModel
 
@@ -33,6 +35,7 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
+        loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         shoutsViewModel = ViewModelProvider(this)[ShoutsViewModel::class.java]
         shoutDetailViewModel = ViewModelProvider(this)[ShoutDetailViewModel::class.java]
 
@@ -47,6 +50,7 @@ class MainActivity : ComponentActivity() {
                 AppNavGraph(
                     navController,
                     startDestination,
+                    loginViewModel = loginViewModel,
                     shoutsViewModel = shoutsViewModel,
                     shoutDetailViewModel = shoutDetailViewModel
                 )

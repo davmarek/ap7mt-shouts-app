@@ -32,4 +32,8 @@ object RetrofitInstance {
     val shoutsApi: ShoutsApi by lazy {
         retrofit.create(ShoutsApi::class.java)
     }
+
+    val authApi: AuthApi by lazy {
+        retrofit.create(AuthApi::class.java)
+    }
 }

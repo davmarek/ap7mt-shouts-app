@@ -3,11 +3,12 @@ package cz.davmarek.shouts.viewstates
 import android.content.Context
 import cz.davmarek.shouts.models.Shout
 
-data class ShoutsViewState(
+data class LoginViewState(
     val isLoading: Boolean = false,
-    val shouts: List<Shout> = emptyList(),
-    val search: String = "",
 
-    val context: Context? = null,
+    val username: String = "",
+    val password: String = "",
+
+    val context: Context? = null
 
     )

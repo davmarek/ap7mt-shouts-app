@@ -62,4 +62,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.okhttp)
+
+    implementation(libs.androidx.material.icons.extended)
 }
