@@ -1,5 +1,6 @@
 package cz.davmarek.shouts.api
 
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -14,6 +15,12 @@ object RetrofitInstance {
         this.tokenProvider = tokenProvider
     }
 
+    private val gson by lazy {
+        GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ssz")
+            .create()
+    }
+
     private val okHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(tokenProvider))
@@ -25,7 +32,7 @@ object RetrofitInstance {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 

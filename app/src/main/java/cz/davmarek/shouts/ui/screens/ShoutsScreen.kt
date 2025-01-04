@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
@@ -76,7 +77,7 @@ fun ShoutsScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    Log.d("ShoutsScreen", "FloatingActionButton clicked")
+                    navController?.navigate("ShoutCreateScreen")
                 }
             ) {
                 Icon(Icons.Filled.Add, "Floating action button.")
@@ -98,13 +99,16 @@ fun ShoutsScreen(
 
                 NavigationBarItem(
                     icon = {
-                        Icon(Icons.Default.Edit, contentDescription = "Edit")
+                        Icon(Icons.Default.Delete, contentDescription = "Logout")
                     },
-                    label = { Text("Edit") },
+                    label = { Text("Logout") },
                     selected = false,
                     onClick = {
                         Log.i("ShoutsScreen", "Clearing token");
                         SessionManager(context).clearAuthToken()
+                        navController?.navigate("LoginScreen") {
+                            popUpTo("ShoutsScreen") { inclusive = true }
+                        }
                     }
 
                 )
@@ -165,16 +169,13 @@ fun ShoutsScreen(
 
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 8.dp),
+                    .padding(horizontal = 8.dp, vertical = 8.dp).fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 items(viewState.value.shouts) { shout ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-
                             .clickable {
                                 navController?.navigate("ShoutDetailScreen/${shout}")
                             }

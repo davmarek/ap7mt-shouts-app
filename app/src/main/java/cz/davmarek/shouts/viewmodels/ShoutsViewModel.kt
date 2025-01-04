@@ -15,9 +15,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class ShoutsViewModel(mock: Boolean = false) : ViewModel() {
-    private val booksRepository = ShoutsRepository(RetrofitInstance.shoutsApi)
+    private val shoutsRepository = ShoutsRepository(RetrofitInstance.shoutsApi)
 
     private val _viewState = MutableStateFlow(ShoutsViewState())
     val viewState: StateFlow<ShoutsViewState> = _viewState.asStateFlow()
@@ -54,10 +55,9 @@ class ShoutsViewModel(mock: Boolean = false) : ViewModel() {
 
     fun fetchShouts() {
         viewModelScope.launch {
-
             setIsLoading(true)
             try {
-                val shouts = booksRepository.getShouts()
+                val shouts = shoutsRepository.getShouts()
                 setShouts(shouts)
                 showToast("Shouts fetched")
             } catch (e: Exception) {
@@ -81,7 +81,7 @@ class ShoutsViewModel(mock: Boolean = false) : ViewModel() {
         viewModelScope.launch {
             _viewState.update { it.copy(isLoading = true) }
             try {
-                val shouts = booksRepository.getShouts()
+                val shouts = shoutsRepository.getShouts()
                 _viewState.update {
                     it.copy(shouts = shouts)
                 }
@@ -103,26 +103,51 @@ class ShoutsViewModel(mock: Boolean = false) : ViewModel() {
 
     private fun fetchShoutsMock() {
         val list = listOf(
-            Shout("1", "Hello", "1", ShoutUser("1", "User1")),
-            Shout("2", "Hi", "2", ShoutUser("2", "User2")),
-            Shout("3", "Hey", "3", ShoutUser("3", "User3")),
-            Shout("4", "Hola", "4", ShoutUser("4", "User4")),
-            Shout("5", "Bonjour", "5", ShoutUser("5", "User5")),
-            Shout("6", "Ciao", "6", ShoutUser("6", "User6")),
-            Shout("7", "Hallo", "7", ShoutUser("7", "User7")),
-            Shout("8", "Salut", "8", ShoutUser("8", "User8")),
-            Shout("9", "Privet", "9", ShoutUser("9", "User9")),
-            Shout("10", "Namaste", "10", ShoutUser("10", "User10")),
-            Shout("11", "Konnichiwa", "11", ShoutUser("11", "User11")),
-            Shout("12", "Annyeong", "12", ShoutUser("12", "User12")),
-            Shout("13", "Nihao", "13", ShoutUser("13", "User13")),
-            Shout("14", "Salam", "14", ShoutUser("14", "User14")),
-            Shout("15", "Merhaba", "15", ShoutUser("15", "User15")),
-            Shout("16", "Shalom", "16", ShoutUser("16", "User16")),
-            Shout("17", "Szia", "17", ShoutUser("17", "User17")),
-            Shout("18", "Hej", "18", ShoutUser("18", "User18")),
-            Shout("19", "Hei", "19", ShoutUser("19", "User19")),
-            Shout("20", "Ahoj", "20", ShoutUser("20", "User20")),
+//            Shout("1", "Hello","1", ShoutUser("1", "User1"), "20.10.2002"),
+//            Shout("2", "Hi", "2", ShoutUser("2", "User2"), "20.10.2002"),
+//            Shout("3", "Hey", "3", ShoutUser("3", "User3"), "20.10.2002"),
+//            Shout("4", "Hola", "4", ShoutUser("4", "User4"), "20.10.2002"),
+//            Shout("5", "Bonjour", "5", ShoutUser("5", "User5"), "20.10.2002"),
+//            Shout("6", "Ciao", "6", ShoutUser("6", "User6"), "20.10.2002"),
+//            Shout("7", "Hallo", "7", ShoutUser("7", "User7"), "20.10.2002"),
+//            Shout("8", "Salut", "8", ShoutUser("8", "User8"), "20.10.2002"),
+//            Shout("9", "Privet", "9", ShoutUser("9", "User9"), "20.10.2002"),
+//            Shout("10", "Namaste", "10", ShoutUser("10", "User10"), "20.10.2002"),
+//            Shout("11", "Konnichiwa", "11", ShoutUser("11", "User11"), "20.10.2002"),
+//            Shout("12", "Annyeong", "12", ShoutUser("12", "User12"), "20.10.2002"),
+//            Shout("13", "Nihao", "13", ShoutUser("13", "User13"), "20.10.2002"),
+//            Shout("14", "Salam", "14", ShoutUser("14", "User14"), "20.10.2002"),
+//            Shout("15", "Merhaba", "15", ShoutUser("15", "User15"), "20.10.2002"),
+//            Shout("16", "Shalom", "16", ShoutUser("16", "User16"), "20.10.2002"),
+//            Shout("17", "Szia", "17", ShoutUser("17", "User17"), "20.10.2002"),
+//            Shout("18", "Hej", "18", ShoutUser("18", "User18"), "20.10.2002"),
+//            Shout("19", "Hei", "19", ShoutUser("19", "User19"), "20.10.2002"),
+//            Shout("20", "Ahoj", "20", ShoutUser("20", "User20"), "20.10.2002"),
+
+
+
+
+            Shout("1", "Hello","1", ShoutUser("1", "User1"), Date()),
+            Shout("2", "Hi", "2", ShoutUser("2", "User2"), Date()),
+            Shout("3", "Hey", "3", ShoutUser("3", "User3"), Date()),
+            Shout("4", "Hola", "4", ShoutUser("4", "User4"), Date()),
+            Shout("5", "Bonjour", "5", ShoutUser("5", "User5"), Date()),
+            Shout("6", "Ciao", "6", ShoutUser("6", "User6"), Date()),
+            Shout("7", "Hallo", "7", ShoutUser("7", "User7"), Date()),
+            Shout("8", "Salut", "8", ShoutUser("8", "User8"), Date()),
+            Shout("9", "Privet", "9", ShoutUser("9", "User9"), Date()),
+            Shout("10", "Namaste", "10", ShoutUser("10", "User10"), Date()),
+            Shout("11", "Konnichiwa", "11", ShoutUser("11", "User11"), Date()),
+            Shout("12", "Annyeong", "12", ShoutUser("12", "User12"), Date()),
+            Shout("13", "Nihao", "13", ShoutUser("13", "User13"), Date()),
+            Shout("14", "Salam", "14", ShoutUser("14", "User14"), Date()),
+            Shout("15", "Merhaba", "15", ShoutUser("15", "User15"), Date()),
+            Shout("16", "Shalom", "16", ShoutUser("16", "User16"), Date()),
+            Shout("17", "Szia", "17", ShoutUser("17", "User17"), Date()),
+            Shout("18", "Hej", "18", ShoutUser("18", "User18"), Date()),
+            Shout("19", "Hei", "19", ShoutUser("19", "User19"), Date()),
+            Shout("20", "Ahoj", "20", ShoutUser("20", "User20"), Date()),
+
             )
 
         _viewState.update {
