@@ -30,7 +30,6 @@ class LoginViewModel : ViewModel() {
     val navigateToMain = _navigateToMain.asStateFlow()
 
 
-
     init {
         // fetchShouts()
     }
@@ -53,25 +52,39 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun onSubmit(){
+    private fun setIsLoading(isLoading: Boolean) {
+        _viewState.update {
+            it.copy(isLoading = isLoading)
+        }
+    }
+
+    private fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+        _viewState.value.context?.let {
+            Toast.makeText(it, message, duration).show()
+        }
+
+    }
+
+    fun onSubmit() {
         viewModelScope.launch {
-            _viewState.update { it.copy(isLoading = true) }
+            setIsLoading(true)
             try {
-                val token = authRepository.login(_viewState.value.username, _viewState.value.password)
-                _viewState.update {
-                    it.copy(isLoading = false)
-                }
+                val token = authRepository.login(
+                    _viewState.value.username,
+                    _viewState.value.password
+                )
+
+                setIsLoading(false)
                 _viewState.value.context?.let {
                     SessionManager(it).saveAuthToken(token)
                 }
                 _navigateToMain.update { true }
+
             } catch (e: Exception) {
-                Log.e("LoginViewModel", "Error logging in ${e.toString()}", e)
-                _viewState.value.context?.let {
-                    Toast.makeText(it, "Login error $e", Toast.LENGTH_LONG).show()
-                }
+                Log.e("LoginViewModel", "Error logging in $e", e)
+                showToast("Login error $e")
             }
-            _viewState.update { it.copy(isLoading = false) }
+            setIsLoading(false)
         }
     }
 

@@ -5,19 +5,23 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -62,16 +66,21 @@ fun ShoutsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors().copy(
-                    containerColor = Color.Yellow,
-
-                    ),
                 title = {
                     Text(
                         text = "Shouts"
                     )
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    Log.d("ShoutsScreen", "FloatingActionButton clicked")
+                }
+            ) {
+                Icon(Icons.Filled.Add, "Floating action button.")
+            }
         },
         bottomBar = {
             NavigationBar(
@@ -144,7 +153,7 @@ fun ShoutsScreen(
                 )
 
 
-                IconButton (onClick = {
+                IconButton(onClick = {
                     Log.i("ShoutsScreen", "Search button clicked");
                     viewModel.searchShouts()
                     focusManager.clearFocus()
@@ -158,25 +167,41 @@ fun ShoutsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 items(viewState.value.shouts) { shout ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp)
+
                             .clickable {
                                 navController?.navigate("ShoutDetailScreen/${shout}")
                             }
 
                     ) {
-                        Text(
-                            text = shout.text,
+                        Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            style = MaterialTheme.typography.titleMedium
-                        )
+                                .padding(16.dp, 16.dp)
+                        ) {
+
+                            Text(
+                                text = "@${shout.user.username}",
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                style = MaterialTheme.typography.titleSmall
+                            )
+
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            Text(
+                                text = shout.text,
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
                     }
                 }
 
@@ -191,5 +216,5 @@ fun ShoutsScreen(
 @Preview
 @Composable
 fun ShoutsScreenPreview() {
-    ShoutsScreen(navController = null, viewModel = ShoutsViewModel())
+    ShoutsScreen(navController = null, viewModel = ShoutsViewModel(mock = true))
 }

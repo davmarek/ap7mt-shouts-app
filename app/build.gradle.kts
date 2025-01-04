@@ -64,4 +64,6 @@ dependencies {
     implementation(libs.okhttp)
 
     implementation(libs.androidx.material.icons.extended)
+
+    implementation("com.auth0:java-jwt:4.4.0")
 }

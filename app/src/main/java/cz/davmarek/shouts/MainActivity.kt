@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            MaterialTheme {
+            ShoutsTheme {
                 val navController = rememberNavController()
                 AppNavGraph(
                     navController,

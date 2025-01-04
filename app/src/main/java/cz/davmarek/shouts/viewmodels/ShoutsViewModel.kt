@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.davmarek.shouts.api.RetrofitInstance
 import cz.davmarek.shouts.models.Shout
+import cz.davmarek.shouts.models.ShoutUser
 import cz.davmarek.shouts.repositories.ShoutsRepository
 import cz.davmarek.shouts.viewstates.ShoutsViewState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,12 +16,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ShoutsViewModel : ViewModel() {
+class ShoutsViewModel(mock: Boolean = false) : ViewModel() {
     private val booksRepository = ShoutsRepository(RetrofitInstance.shoutsApi)
 
     private val _viewState = MutableStateFlow(ShoutsViewState())
     val viewState: StateFlow<ShoutsViewState> = _viewState.asStateFlow()
 
+    init {
+        if (mock) {
+            fetchShoutsMock()
+        }
+    }
 
     fun onSearchChanged(search: String) {
         _viewState.update {
@@ -95,62 +101,32 @@ class ShoutsViewModel : ViewModel() {
     }
 
 
-
     private fun fetchShoutsMock() {
         val list = listOf(
-            "Shout 1",
-            "Shout 2",
-            "Shout 3",
-            "Shout 4",
-            "Shout 5",
-            "Shout 6",
-            "Shout 7",
-            "Shout 8",
-            "Shout 9",
-            "Shout 10",
-            "Shout 11",
-            "Shout 12",
-            "Shout 13",
-            "Shout 14",
-            "Shout 15",
-            "Shout 16",
-            "Shout 17",
-            "Shout 18",
-            "Shout 19",
-            "Shout 20",
-            "Shout 21",
-            "Shout 22",
-            "Shout 23",
-            "Shout 24",
-            "Shout 25",
-            "Shout 26",
-            "Shout 27",
-            "Shout 28",
-            "Shout 29",
-            "Shout 30",
-            "Shout 31",
-            "Shout 32",
-            "Shout 33",
-            "Shout 34",
-            "Shout 35",
-            "Shout 36",
-            "Shout 37",
-            "Shout 38",
-            "Shout 39",
-            "Shout 40",
-            "Shout 41",
-            "Shout 42",
-            "Shout 43",
-            "Shout 44",
-            "Shout 45",
-            "Shout 46",
-            "Shout 47",
-            "Shout 48",
-            "Shout 49",
-            "Shout 50"
-        )
-//        _viewState.update {
-//            it.copy(shoutsList = list)
-//        }
+            Shout("1", "Hello", "1", ShoutUser("1", "User1")),
+            Shout("2", "Hi", "2", ShoutUser("2", "User2")),
+            Shout("3", "Hey", "3", ShoutUser("3", "User3")),
+            Shout("4", "Hola", "4", ShoutUser("4", "User4")),
+            Shout("5", "Bonjour", "5", ShoutUser("5", "User5")),
+            Shout("6", "Ciao", "6", ShoutUser("6", "User6")),
+            Shout("7", "Hallo", "7", ShoutUser("7", "User7")),
+            Shout("8", "Salut", "8", ShoutUser("8", "User8")),
+            Shout("9", "Privet", "9", ShoutUser("9", "User9")),
+            Shout("10", "Namaste", "10", ShoutUser("10", "User10")),
+            Shout("11", "Konnichiwa", "11", ShoutUser("11", "User11")),
+            Shout("12", "Annyeong", "12", ShoutUser("12", "User12")),
+            Shout("13", "Nihao", "13", ShoutUser("13", "User13")),
+            Shout("14", "Salam", "14", ShoutUser("14", "User14")),
+            Shout("15", "Merhaba", "15", ShoutUser("15", "User15")),
+            Shout("16", "Shalom", "16", ShoutUser("16", "User16")),
+            Shout("17", "Szia", "17", ShoutUser("17", "User17")),
+            Shout("18", "Hej", "18", ShoutUser("18", "User18")),
+            Shout("19", "Hei", "19", ShoutUser("19", "User19")),
+            Shout("20", "Ahoj", "20", ShoutUser("20", "User20")),
+            )
+
+        _viewState.update {
+            it.copy(shouts = list)
+        }
     }
 }

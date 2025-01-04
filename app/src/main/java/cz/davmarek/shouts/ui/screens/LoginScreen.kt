@@ -65,11 +65,11 @@ fun LoginScreen(
     }
 
     LaunchedEffect(navigateToMainState.value) {
-        Log.d("LoginScreen", "LaunchedEffect(navigateToMainState)")
-        Log.d("LoginScreen", "navigateToMainState: ${navigateToMainState.value}")
         if (navigateToMainState.value) {
             Log.d("LoginScreen", "LaunchedEffect: navigate to ShoutsScreen")
-            navController?.navigate("ShoutsScreen")
+            navController?.navigate("ShoutsScreen"){
+                popUpTo("LoginScreen") { inclusive = true }
+            }
         }
     }
 
