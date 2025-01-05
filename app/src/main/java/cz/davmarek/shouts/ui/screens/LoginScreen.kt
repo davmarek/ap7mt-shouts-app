@@ -17,7 +17,9 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -58,14 +60,14 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
     val viewState = viewModel.viewState.collectAsState()
-    val navigateToMainState = viewModel.navigateToMain.collectAsState()
+
 
     LaunchedEffect(Unit) {
         viewModel.setContext(context)
     }
 
-    LaunchedEffect(navigateToMainState.value) {
-        if (navigateToMainState.value) {
+    LaunchedEffect(viewState.value.shouldNavigateToMain) {
+        if (viewState.value.shouldNavigateToMain) {
             Log.d("LoginScreen", "LaunchedEffect: navigate to ShoutsScreen")
             navController?.navigate("ShoutsScreen"){
                 popUpTo("LoginScreen") { inclusive = true }
@@ -74,7 +76,7 @@ fun LoginScreen(
     }
 
     Scaffold(
-        topBar = {
+        /*topBar = {
             TopAppBar(
                 navigationIcon = {
                     NavigationBackButton { navController?.popBackStack() }
@@ -86,7 +88,7 @@ fun LoginScreen(
                     )
                 }
             )
-        },
+        },*/
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -137,7 +139,27 @@ fun LoginScreen(
                 enabled = viewState.value.isLoading.not(),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("SIGN IN")
+                Text("Sign in")
+            }
+
+            Spacer(
+                modifier = Modifier.height(4.dp)
+            )
+
+            Text("OR")
+
+            Spacer(
+                modifier = Modifier.height(4.dp)
+            )
+
+            FilledTonalButton(
+                onClick = {
+                    viewModel.onSubmit()
+                },
+                enabled = viewState.value.isLoading.not(),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Create an account")
             }
         }
     }

@@ -1,5 +1,6 @@
 package cz.davmarek.shouts.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,12 +10,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -64,15 +68,17 @@ fun ShoutDetailScreen(
 
                 actions = {
 
-                    IconButton(onClick = {
-                        // TODO: Implement editing screen
-                    }) {
-                        Icon(Icons.Default.Edit, contentDescription = "Edit")
-                    }
-                    IconButton(onClick = {
-                        // TODO: Implement deleting with a dialog
-                    }) {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete")
+                    if (viewState.value.isShoutMine) {
+                        IconButton(onClick = {
+                            // TODO: Implement editing screen
+                        }) {
+                            Icon(Icons.Default.Edit, contentDescription = "Edit")
+                        }
+                        IconButton(onClick = {
+                            viewModel.openDeleteDialog()
+                        }) {
+                            Icon(Icons.Default.Delete, contentDescription = "Delete")
+                        }
                     }
                 }
 
@@ -85,6 +91,21 @@ fun ShoutDetailScreen(
                 .padding(innerPadding)
                 .padding(16.dp),
         ) {
+
+            when {
+                viewState.value.openDeleteDialog ->
+                    DeleteDialog(
+                        onDismissRequest = {
+                            viewModel.closeDeleteDialog()
+                        },
+                        onConfirmation = {
+                            viewModel.closeDeleteDialog()
+                            viewModel.deleteShout()
+                            navController?.popBackStack()
+                            Log.d("ShoutDetailScreen", "Delete confirmed")
+                        },
+                    )
+            }
 
             Text(
                 text = "@" + (viewState.value.shout?.user?.username ?: ""),
@@ -107,6 +128,47 @@ fun ShoutDetailScreen(
 
         }
     }
+}
+
+@Composable
+fun DeleteDialog(
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+    dialogTitle: String = "Delete Shout",
+    dialogText: String = "Are you sure you want to delete this shout?",
+) {
+    AlertDialog(
+        icon = {
+            Icon(Icons.Default.Delete, contentDescription = "Example Icon")
+        },
+        title = {
+            Text(text = dialogTitle)
+        },
+        text = {
+            Text(text = dialogText)
+        },
+        onDismissRequest = {
+            onDismissRequest()
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirmation()
+                }
+            ) {
+                Text("Confirm")
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    onDismissRequest()
+                }
+            ) {
+                Text("Dismiss")
+            }
+        },
+    )
 }
 
 @Preview

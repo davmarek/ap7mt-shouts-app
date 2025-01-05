@@ -81,8 +81,10 @@ class ShoutCreateViewModel() : ViewModel() {
         viewModelScope.launch {
             setIsLoading(true)
             try {
-                val shout = shoutsRepository.createShout(viewState.value.text)
-                showToast("Shout created with id ${shout.id}")
+                shoutsRepository.createShout(viewState.value.text)
+                _viewState.update {
+                    it.copy(shouldClose = true)
+                }
             } catch (e: Exception) {
                 Log.e("ShoutsViewModel", "Error creating shout ${e.toString()}", e)
                 showToast("Creating error $e")

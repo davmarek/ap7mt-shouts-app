@@ -61,6 +61,13 @@ fun ShoutsScreen(
 
     val context = LocalContext.current
     LaunchedEffect(Unit) {
+        val token = SessionManager(context).getAuthToken()
+        if(token == null){
+            navController?.navigate("LoginScreen") {
+                popUpTo("ShoutsScreen") { inclusive = true }
+            }
+        }
+
         viewModel.setContext(context)
         viewModel.fetchShouts()
     }

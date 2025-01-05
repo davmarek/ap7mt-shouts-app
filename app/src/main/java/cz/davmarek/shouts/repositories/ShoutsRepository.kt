@@ -16,5 +16,9 @@ class ShoutsRepository(private val api: ShoutsApi) {
     suspend fun createShout(text: String): Shout {
         return api.createShout(CreateShoutRequest(text))
     }
+
+    suspend fun deleteShout(id: String) {
+        return api.deleteShout(id)
+    }
     
 }

@@ -29,13 +29,22 @@ class SessionManager(context: Context) {
     /**
      * Function to fetch auth token
      */
-    fun fetchAuthToken(): String? {
+    fun getAuthToken(): String? {
         val token = prefs.getString(ACCESS_TOKEN, null)
         if (token != null && isTokenExpired(token)) {
             clearAuthToken()
             return null
         }
         return token
+    }
+
+    fun getUserId(): String? {
+        val token = getAuthToken()
+        if (token != null) {
+            val jwt = JWT().decodeJwt(token)
+            return jwt.subject
+        }
+        return null
     }
 
 

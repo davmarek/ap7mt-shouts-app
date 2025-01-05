@@ -8,5 +8,9 @@ data class ShoutDetailViewState(
     val shoutId: String = "",
     val shout: Shout? = null,
 
+    val isShoutMine: Boolean = false,
+
+    val openDeleteDialog: Boolean = false,
+
     val context: Context? = null
 )

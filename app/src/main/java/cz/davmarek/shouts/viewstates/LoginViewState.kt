@@ -5,6 +5,7 @@ import cz.davmarek.shouts.models.Shout
 
 data class LoginViewState(
     val isLoading: Boolean = false,
+    val shouldNavigateToMain: Boolean = false,
 
     val username: String = "",
     val password: String = "",

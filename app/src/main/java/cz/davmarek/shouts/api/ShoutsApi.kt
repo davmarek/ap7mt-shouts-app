@@ -3,6 +3,7 @@ package cz.davmarek.shouts.api
 import cz.davmarek.shouts.models.CreateShoutRequest
 import cz.davmarek.shouts.models.Shout
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -19,4 +20,7 @@ interface ShoutsApi {
     suspend fun createShout(
         @Body request: CreateShoutRequest
     ): Shout
+
+    @DELETE("shouts/{id}")
+    suspend fun deleteShout(@Path(value = "id", encoded = true) id: String)
 }

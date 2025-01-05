@@ -1,10 +1,12 @@
 package cz.davmarek.shouts.viewmodels
 
 import android.content.Context
+import android.se.omapi.Session
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cz.davmarek.shouts.SessionManager
 import cz.davmarek.shouts.api.RetrofitInstance
 import cz.davmarek.shouts.models.Shout
 import cz.davmarek.shouts.models.ShoutUser
@@ -69,16 +71,51 @@ class ShoutDetailViewModel(mock: Boolean = false) : ViewModel() {
         viewModelScope.launch {
             setIsLoading(true)
             try {
+
                 val shout = shoutsRepository.getShout(shoutId)
-                _viewState.update {
-                    it.copy(shout = shout)
+                var isShoutMine = false
+                _viewState.value.context?.let {
+                    SessionManager(it).getUserId()?.let { userId ->
+                        isShoutMine = shout.userId == userId
+                    }
                 }
+
+                _viewState.update {
+                    it.copy(shout = shout, isShoutMine = isShoutMine)
+                }
+
 
             } catch (e: Exception) {
                 Log.e("ShoutDetailViewModel", "Error fetching shouts ${e}", e)
                 showToast("Fetching error $e")
             }
             setIsLoading(false)
+        }
+    }
+
+    fun deleteShout() {
+        viewModelScope.launch {
+            setIsLoading(true)
+            try {
+                shoutsRepository.deleteShout(_viewState.value.shoutId)
+                showToast("Shout deleted")
+            } catch (e: Exception) {
+                Log.e("ShoutDetailViewModel", "Error deleting shout ${e}", e)
+                showToast("Deleting error $e")
+            }
+            setIsLoading(false)
+        }
+    }
+
+    fun openDeleteDialog() {
+        _viewState.update {
+            it.copy(openDeleteDialog = true)
+        }
+    }
+
+    fun closeDeleteDialog() {
+        _viewState.update {
+            it.copy(openDeleteDialog = false)
         }
     }
 

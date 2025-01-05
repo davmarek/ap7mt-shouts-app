@@ -26,13 +26,6 @@ class LoginViewModel : ViewModel() {
     private val _viewState = MutableStateFlow(LoginViewState())
     val viewState = _viewState.asStateFlow()
 
-    private val _navigateToMain = MutableStateFlow(false)
-    val navigateToMain = _navigateToMain.asStateFlow()
-
-
-    init {
-        // fetchShouts()
-    }
 
     fun onUsernameChanged(username: String) {
         _viewState.update {
@@ -78,7 +71,10 @@ class LoginViewModel : ViewModel() {
                 _viewState.value.context?.let {
                     SessionManager(it).saveAuthToken(token)
                 }
-                _navigateToMain.update { true }
+
+                _viewState.update {
+                    it.copy(shouldNavigateToMain = true)
+                }
 
             } catch (e: Exception) {
                 Log.e("LoginViewModel", "Error logging in $e", e)

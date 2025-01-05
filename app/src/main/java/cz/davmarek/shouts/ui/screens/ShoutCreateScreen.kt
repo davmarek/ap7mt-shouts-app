@@ -45,6 +45,12 @@ fun ShoutCreateScreen(
         viewModel.clearText()
     }
 
+    LaunchedEffect(viewState.value.shouldClose) {
+        if (viewState.value.shouldClose) {
+            navController?.popBackStack()
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
