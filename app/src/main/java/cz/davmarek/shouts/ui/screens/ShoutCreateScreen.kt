@@ -50,7 +50,7 @@ fun ShoutCreateScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Shout Detail"
+                        text = "Shout something..."
                     )
                 },
                 navigationIcon = {
@@ -77,7 +77,7 @@ fun ShoutCreateScreen(
                     viewModel.onTextChanged(it)
                     Log.d("ShoutCreateScreen", "onValueChange=$it")
                 },
-                label = { Text("Title") },
+                label = { Text("What is on your mind?") },
                 minLines = 5,
                 maxLines = 10,
                 modifier = Modifier.fillMaxWidth()

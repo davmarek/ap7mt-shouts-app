@@ -61,7 +61,7 @@ class ShoutsViewModel(mock: Boolean = false) : ViewModel() {
                 setShouts(shouts)
                 showToast("Shouts fetched")
             } catch (e: Exception) {
-                Log.e("ShoutsViewModel", "Error fetching shouts ${e.toString()}", e)
+                Log.e("ShoutsViewModel", "Error fetching shouts ${e}", e)
                 showToast("Fetching error $e")
             }
             setIsLoading(false)

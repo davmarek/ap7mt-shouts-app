@@ -9,6 +9,10 @@ class ShoutsRepository(private val api: ShoutsApi) {
         return api.getShouts()
     }
 
+    suspend fun getShout(id: String): Shout{
+        return api.getShout(id)
+    }
+
     suspend fun createShout(text: String): Shout {
         return api.createShout(CreateShoutRequest(text))
     }

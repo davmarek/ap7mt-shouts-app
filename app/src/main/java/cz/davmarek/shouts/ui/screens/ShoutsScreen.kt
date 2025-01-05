@@ -47,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import cz.davmarek.shouts.SessionManager
+import cz.davmarek.shouts.models.Shout
 import cz.davmarek.shouts.viewmodels.ShoutsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -169,46 +170,52 @@ fun ShoutsScreen(
 
             LazyColumn(
                 modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 8.dp).fillMaxSize(),
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 items(viewState.value.shouts) { shout ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                navController?.navigate("ShoutDetailScreen/${shout}")
-                            }
-
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp, 16.dp)
-                        ) {
-
-                            Text(
-                                text = "@${shout.user.username}",
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                style = MaterialTheme.typography.titleSmall
-                            )
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Text(
-                                text = shout.text,
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
+                    ShoutItem(shout = shout) {
+                        navController?.navigate("ShoutDetailScreen/${shout.id}")
                     }
+
                 }
-
             }
+        }
+    }
+}
 
+@Composable
+fun ShoutItem(
+    shout: Shout,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp, 16.dp)
+        ) {
 
+            Text(
+                text = "@${shout.user.username}",
+                modifier = Modifier
+                    .fillMaxWidth(),
+                style = MaterialTheme.typography.titleSmall
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = shout.text,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }
