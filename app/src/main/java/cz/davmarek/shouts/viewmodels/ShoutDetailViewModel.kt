@@ -1,7 +1,6 @@
 package cz.davmarek.shouts.viewmodels
 
 import android.content.Context
-import android.se.omapi.Session
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel

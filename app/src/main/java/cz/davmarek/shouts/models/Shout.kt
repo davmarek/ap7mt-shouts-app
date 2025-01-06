@@ -7,7 +7,7 @@ data class Shout(
     val id: String,
     val text: String,
     val userId: String,
-    val user: ShoutUser,
+    val user: ShoutUser?,
     val createdAt: Date,
 )
 

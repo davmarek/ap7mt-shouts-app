@@ -2,6 +2,7 @@ package cz.davmarek.shouts.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -43,7 +44,7 @@ fun UserDetailScreen(
     LaunchedEffect(Unit) {
         viewModel.setContext(context)
         viewModel.fetchUser(userId)
-        // TODO: fetch users shouts
+        viewModel.fetchUserShouts(userId)
     }
 
     val viewState = viewModel.viewState.collectAsState()
@@ -83,7 +84,7 @@ fun UserDetailScreen(
             Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
+                .padding(horizontal = 16.dp),
         ) {
 
             when {
@@ -98,7 +99,6 @@ fun UserDetailScreen(
                             navController?.navigate("LoginScreen") {
                                 popUpTo("ShoutsScreen") { inclusive = true }
                             }
-
                         },
                         dialogTitle = "Log out",
                         dialogText = "Are you sure you want to log out?",
@@ -126,9 +126,10 @@ fun UserDetailScreen(
 
             LazyColumn(
                 modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
+                    .padding(top = 8.dp)
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(top = 8.dp, bottom = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(viewState.value.shouts) { shout ->
                     ShoutItem(shout = shout) {

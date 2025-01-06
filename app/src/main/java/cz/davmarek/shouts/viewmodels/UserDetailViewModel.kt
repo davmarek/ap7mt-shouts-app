@@ -10,7 +10,6 @@ import cz.davmarek.shouts.api.RetrofitInstance
 import cz.davmarek.shouts.models.Shout
 import cz.davmarek.shouts.models.ShoutUser
 import cz.davmarek.shouts.models.User
-import cz.davmarek.shouts.repositories.ShoutsRepository
 import cz.davmarek.shouts.repositories.UsersRepository
 import cz.davmarek.shouts.viewstates.UserDetailViewState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,10 +20,9 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 class UserDetailViewModel(mock: Boolean = false) : ViewModel() {
-    // TODO: replace with user repository
+
     private val usersRepository = UsersRepository(RetrofitInstance.usersApi)
 
-    // TODO: replace with UserDetailViewState
     private val _viewState = MutableStateFlow(UserDetailViewState())
     val viewState: StateFlow<UserDetailViewState> = _viewState.asStateFlow()
 
@@ -84,7 +82,6 @@ class UserDetailViewModel(mock: Boolean = false) : ViewModel() {
     }
 
     fun fetchUser(userId: String) {
-
         viewModelScope.launch {
             setIsLoading(true)
             try {
@@ -102,7 +99,24 @@ class UserDetailViewModel(mock: Boolean = false) : ViewModel() {
 
 
             } catch (e: Exception) {
-                Log.e("UserDetailViewModel", "Fetching error $e", e)
+                Log.e("UserDetailViewModel", "Fetching error user $e", e)
+                showToast("Fetching error $e")
+            }
+            setIsLoading(false)
+        }
+    }
+
+    fun fetchUserShouts(userId: String) {
+        viewModelScope.launch {
+            setIsLoading(true)
+            try {
+                // reversed() is used to show the latest shout first
+                val shouts = usersRepository.getUserShouts(userId).reversed()
+                _viewState.update {
+                    it.copy(shouts = shouts)
+                }
+            } catch (e: Exception) {
+                Log.e("UserDetailViewModel", "Fetching error shouts $e", e)
                 showToast("Fetching error $e")
             }
             setIsLoading(false)

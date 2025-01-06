@@ -30,14 +30,15 @@ fun ShoutItem(
                 .padding(16.dp, 16.dp)
         ) {
 
-            Text(
-                text = "@${shout.user.username}",
-                modifier = Modifier
-                    .fillMaxWidth(),
-                style = MaterialTheme.typography.titleSmall
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
+            shout.user?.username?.let { username ->
+                Text(
+                    text = "@$username",
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+            }
 
             Text(
                 text = shout.text,

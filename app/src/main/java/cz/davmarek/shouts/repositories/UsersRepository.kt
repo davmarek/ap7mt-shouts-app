@@ -13,6 +13,10 @@ class UsersRepository(private val api: UsersApi) {
         return api.getUser(id)
     }
 
+    suspend fun getUserShouts(id: String): List<Shout> {
+        return api.getUserShouts(id)
+    }
+
 //    suspend fun createShout(text: String): Shout {
 //        return api.createShout(CreateShoutRequest(text))
 //    }

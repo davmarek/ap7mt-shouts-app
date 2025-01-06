@@ -7,16 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.davmarek.shouts.SessionManager
 import cz.davmarek.shouts.api.RetrofitInstance
-import cz.davmarek.shouts.api.ShoutsApi
 import cz.davmarek.shouts.repositories.AuthRepository
-import cz.davmarek.shouts.repositories.ShoutsRepository
 import cz.davmarek.shouts.viewstates.LoginViewState
-import cz.davmarek.shouts.viewstates.ShoutsViewState
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 

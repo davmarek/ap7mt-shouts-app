@@ -1,14 +1,12 @@
 package cz.davmarek.shouts.ui.screens
 
 import android.util.Log
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,24 +14,19 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,7 +41,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import cz.davmarek.shouts.SessionManager
-import cz.davmarek.shouts.models.Shout
 import cz.davmarek.shouts.ui.components.ShoutItem
 import cz.davmarek.shouts.viewmodels.ShoutsViewModel
 
@@ -71,6 +63,7 @@ fun ShoutsScreen(
         }
 
         viewModel.setContext(context)
+        focusManager.clearFocus()
         viewModel.fetchShouts()
     }
 
@@ -177,8 +170,10 @@ fun ShoutsScreen(
 
             LazyColumn(
                 modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
+                    .padding(horizontal = 8.dp)
+                    //.padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 0.dp)
                     .fillMaxSize(),
+                contentPadding = PaddingValues(vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 items(viewState.value.shouts) { shout ->

@@ -12,7 +12,7 @@ import retrofit2.http.Query
 
 interface ShoutsApi {
     @GET("shouts")
-    suspend fun getShouts(): List<Shout>
+    suspend fun getShouts(@Query(value = "limit", encoded = true) id: Int = 50): List<Shout>
 
     @GET("shouts/{id}")
     suspend fun getShout(@Path(value = "id", encoded = true) id: String): Shout

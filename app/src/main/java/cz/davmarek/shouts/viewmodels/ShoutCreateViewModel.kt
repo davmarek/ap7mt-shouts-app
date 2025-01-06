@@ -6,11 +6,8 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.davmarek.shouts.api.RetrofitInstance
-import cz.davmarek.shouts.models.Shout
-import cz.davmarek.shouts.models.ShoutUser
 import cz.davmarek.shouts.repositories.ShoutsRepository
 import cz.davmarek.shouts.viewstates.ShoutCreateViewState
-import cz.davmarek.shouts.viewstates.ShoutsViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,6 +30,12 @@ class ShoutCreateViewModel() : ViewModel() {
     fun setContext(context: Context) {
         _viewState.update {
             it.copy(context = context)
+        }
+    }
+
+    fun setShouldClose(shouldClose: Boolean) {
+        _viewState.update {
+            it.copy(shouldClose = shouldClose)
         }
     }
 

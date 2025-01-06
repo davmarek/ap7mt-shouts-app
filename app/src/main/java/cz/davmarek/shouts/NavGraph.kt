@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import cz.davmarek.shouts.models.User
 import cz.davmarek.shouts.ui.screens.LoginScreen
 import cz.davmarek.shouts.ui.screens.ShoutCreateScreen
 import cz.davmarek.shouts.ui.screens.ShoutDetailScreen

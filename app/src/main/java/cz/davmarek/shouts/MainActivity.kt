@@ -14,7 +14,6 @@ import cz.davmarek.shouts.viewmodels.ShoutDetailViewModel
 import cz.davmarek.shouts.viewmodels.ShoutEditViewModel
 import cz.davmarek.shouts.viewmodels.ShoutsViewModel
 import cz.davmarek.shouts.viewmodels.UserDetailViewModel
-import cz.davmarek.shouts.viewstates.UserDetailViewState
 
 class MainActivity : ComponentActivity() {
 

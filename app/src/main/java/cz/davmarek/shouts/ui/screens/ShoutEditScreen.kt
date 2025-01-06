@@ -22,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import cz.davmarek.shouts.ui.components.NavigationBackButton
-import cz.davmarek.shouts.viewmodels.ShoutCreateViewModel
 import cz.davmarek.shouts.viewmodels.ShoutEditViewModel
 
 
