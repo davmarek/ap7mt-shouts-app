@@ -36,6 +36,12 @@ class ShoutsViewModel(mock: Boolean = false) : ViewModel() {
         }
     }
 
+    fun clearSearch() {
+        _viewState.update {
+            it.copy(search = "")
+        }
+    }
+
     fun setContext(context: Context) {
         _viewState.update {
             it.copy(context = context)

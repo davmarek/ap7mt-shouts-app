@@ -63,6 +63,7 @@ fun ShoutsScreen(
         }
 
         viewModel.setContext(context)
+        viewModel.clearSearch()
         focusManager.clearFocus()
         viewModel.fetchShouts()
     }
@@ -97,7 +98,8 @@ fun ShoutsScreen(
                     label = { Text("Home") },
                     selected = true,
                     onClick = {
-                        // TODO: add refresh shouts functionality
+                        // refresh shouts
+                        viewModel.fetchShouts()
                     }
 
                 )
@@ -137,7 +139,7 @@ fun ShoutsScreen(
                     value = viewState.value.search,
                     onValueChange = { viewModel.onSearchChanged(it) },
                     label = { Text("Search") },
-                    maxLines = 1,
+                    singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Search,
                         keyboardType = KeyboardType.Text
@@ -159,10 +161,20 @@ fun ShoutsScreen(
                 IconButton(onClick = {
                     focusManager.clearFocus()
                     viewModel.searchShouts(navController)
-
                 }) {
                     Icon(Icons.Default.Search, contentDescription = "Search")
                 }
+            }
+
+            if (!viewState.value.isLoading && viewState.value.shouts.isEmpty()) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("No shouts found", modifier = Modifier.padding(16.dp))
+                }
+                return@Column
             }
 
             LazyColumn(
