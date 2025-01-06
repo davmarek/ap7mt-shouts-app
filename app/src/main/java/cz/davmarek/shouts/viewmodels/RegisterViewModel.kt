@@ -5,20 +5,22 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.JsonParser
 import cz.davmarek.shouts.SessionManager
 import cz.davmarek.shouts.api.RetrofitInstance
 import cz.davmarek.shouts.repositories.AuthRepository
 import cz.davmarek.shouts.viewstates.LoginViewState
+import cz.davmarek.shouts.viewstates.RegisterViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class LoginViewModel : ViewModel() {
+class RegisterViewModel : ViewModel() {
     private val authRepository = AuthRepository(RetrofitInstance.authApi)
 
-    private val _viewState = MutableStateFlow(LoginViewState())
+    private val _viewState = MutableStateFlow(RegisterViewState())
     val viewState = _viewState.asStateFlow()
 
 
@@ -71,15 +73,21 @@ class LoginViewModel : ViewModel() {
             return
         }
 
+
         if(_viewState.value.password.isEmpty()){
             showToast("Password cannot be empty")
+            return
+        }
+
+        if(_viewState.value.password.length < 8){
+            showToast("Password must be at least 8 characters long")
             return
         }
 
         viewModelScope.launch {
             setIsLoading(true)
             try {
-                val token = authRepository.login(
+                val token = authRepository.register(
                     _viewState.value.username,
                     _viewState.value.password
                 )
@@ -94,11 +102,25 @@ class LoginViewModel : ViewModel() {
                 }
 
             } catch (e: HttpException) {
-                Log.e("LoginViewModel", "Error logging in $e", e)
+                if(e.code() == 409){
+                    var message = "Username already taken"
+                    e.response()?.errorBody()?.string()?.let { errorBody ->
+                        JsonParser.parseString(errorBody).asJsonObject.get("message")?.asString?.let {
+                            message = it
+                        }
+                    }
+                    showToast(message)
+                    Log.e("RegisterViewModel", "Register Error $message", e)
+                } else {
+                    Log.e("RegisterViewModel", "Register Error $e", e)
+                    showToast("Register error: ${e.code()} ${e.message()}")
+                }
+
+                Log.e("RegisterViewModel", "Register Error $e", e)
                 showToast("Register error: ${e.code()} ${e.message()}")
             } catch (e: Exception) {
-                Log.e("LoginViewModel", "Error logging in $e", e)
-                showToast("Login error $e")
+                Log.e("RegisterViewModel", "Register Error $e", e)
+                showToast("Register error $e")
             }
             setIsLoading(false)
         }

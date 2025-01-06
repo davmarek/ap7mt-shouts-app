@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import cz.davmarek.shouts.api.RetrofitInstance
 import cz.davmarek.shouts.ui.theme.ShoutsTheme
 import cz.davmarek.shouts.viewmodels.LoginViewModel
+import cz.davmarek.shouts.viewmodels.RegisterViewModel
 import cz.davmarek.shouts.viewmodels.ShoutCreateViewModel
 import cz.davmarek.shouts.viewmodels.ShoutDetailViewModel
 import cz.davmarek.shouts.viewmodels.ShoutEditViewModel
@@ -20,6 +21,7 @@ import cz.davmarek.shouts.viewstates.ShoutSearchViewState
 class MainActivity : ComponentActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var registerViewModel: RegisterViewModel
     private lateinit var shoutsViewModel: ShoutsViewModel
     private lateinit var shoutDetailViewModel: ShoutDetailViewModel
     private lateinit var shoutCreateViewModel: ShoutCreateViewModel
@@ -36,6 +38,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        registerViewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
         shoutsViewModel = ViewModelProvider(this)[ShoutsViewModel::class.java]
         shoutDetailViewModel = ViewModelProvider(this)[ShoutDetailViewModel::class.java]
         shoutCreateViewModel = ViewModelProvider(this)[ShoutCreateViewModel::class.java]
@@ -55,6 +58,7 @@ class MainActivity : ComponentActivity() {
                     navController,
                     startDestination,
                     loginViewModel = loginViewModel,
+                    registerViewModel = registerViewModel,
                     shoutsViewModel = shoutsViewModel,
                     shoutDetailViewModel = shoutDetailViewModel,
                     shoutCreateViewModel = shoutCreateViewModel,
