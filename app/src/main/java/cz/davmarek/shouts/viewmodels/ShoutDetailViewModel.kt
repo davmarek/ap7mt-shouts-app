@@ -40,12 +40,6 @@ class ShoutDetailViewModel(mock: Boolean = false) : ViewModel() {
         }
     }
 
-    private fun setShoutId(shoutId: String) {
-        _viewState.update {
-            it.copy(shoutId = shoutId)
-        }
-    }
-
     private fun setIsLoading(isLoading: Boolean) {
         _viewState.update {
             it.copy(isLoading = isLoading)
@@ -66,7 +60,6 @@ class ShoutDetailViewModel(mock: Boolean = false) : ViewModel() {
     }
 
     fun fetchShout(shoutId: String) {
-        setShoutId(shoutId)
         viewModelScope.launch {
             setIsLoading(true)
             try {
@@ -93,10 +86,14 @@ class ShoutDetailViewModel(mock: Boolean = false) : ViewModel() {
     }
 
     fun deleteShout() {
+        if(_viewState.value.shout == null){
+            return
+        }
+
         viewModelScope.launch {
             setIsLoading(true)
             try {
-                shoutsRepository.deleteShout(_viewState.value.shoutId)
+                shoutsRepository.deleteShout(_viewState.value.shout?.id!!)
                 showToast("Shout deleted")
             } catch (e: Exception) {
                 Log.e("ShoutDetailViewModel", "Error deleting shout ${e}", e)

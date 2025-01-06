@@ -1,7 +1,6 @@
 package cz.davmarek.shouts.ui.theme
 
 import android.os.Build
-import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -49,9 +48,6 @@ fun ShoutsTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-
-//    val colorScheme = DarkColorScheme;
-    Log.d("ShoutsTheme", "darkTheme: $darkTheme, colorScheme.primary: ${colorScheme.primary}, purple: $Purple80")
 
     MaterialTheme(
         colorScheme = colorScheme,

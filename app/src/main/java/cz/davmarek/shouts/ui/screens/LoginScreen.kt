@@ -58,7 +58,7 @@ fun LoginScreen(
 
     LaunchedEffect(viewState.value.shouldNavigateToMain) {
         if (viewState.value.shouldNavigateToMain) {
-            viewModel.setShouldNavigateToMain(false);
+            viewModel.setShouldNavigateToMain(false)
             viewModel.clearFields()
 
             // navigate to shouts screen

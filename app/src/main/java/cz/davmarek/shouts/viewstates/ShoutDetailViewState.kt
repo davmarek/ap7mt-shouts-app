@@ -9,7 +9,6 @@ data class ShoutDetailViewState(
     val openDeleteDialog: Boolean = false,
 
     // model related
-    val shoutId: String = "",
     val shout: Shout? = null,
     val isShoutMine: Boolean = false,
 

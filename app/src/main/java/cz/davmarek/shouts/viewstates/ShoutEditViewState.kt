@@ -9,7 +9,6 @@ data class ShoutEditViewState(
     val shouldClose: Boolean = false,
 
     // model related
-    // val shoutId: String = "",
     val shout: Shout? = null,
 
     // form

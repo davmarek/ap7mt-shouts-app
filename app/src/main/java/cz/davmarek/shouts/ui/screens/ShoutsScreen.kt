@@ -144,7 +144,7 @@ fun ShoutsScreen(
                     keyboardActions = KeyboardActions(
                         onSearch = {
                             viewModel.searchShouts()
-                            Log.i("ShoutsScreen", "Search IME button clicked");
+                            Log.i("ShoutsScreen", "Search IME button clicked")
                             focusManager.clearFocus()
                         }
                     ),
@@ -152,14 +152,11 @@ fun ShoutsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-//                    leadingIcon = {
-//                        Icon(Icons.Default.Check, contentDescription = "Check")
-//                    }
                 )
 
 
                 IconButton(onClick = {
-                    Log.i("ShoutsScreen", "Search button clicked");
+                    Log.i("ShoutsScreen", "Search button clicked")
                     viewModel.searchShouts()
                     focusManager.clearFocus()
 
