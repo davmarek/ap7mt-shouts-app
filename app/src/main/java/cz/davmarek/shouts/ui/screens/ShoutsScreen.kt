@@ -96,7 +96,9 @@ fun ShoutsScreen(
                     },
                     label = { Text("Home") },
                     selected = true,
-                    onClick = { }
+                    onClick = {
+                        // TODO: add refresh shouts functionality
+                    }
 
                 )
 
@@ -143,9 +145,8 @@ fun ShoutsScreen(
 
                     keyboardActions = KeyboardActions(
                         onSearch = {
-                            viewModel.searchShouts()
-                            Log.i("ShoutsScreen", "Search IME button clicked")
                             focusManager.clearFocus()
+                            viewModel.searchShouts(navController)
                         }
                     ),
 
@@ -156,9 +157,8 @@ fun ShoutsScreen(
 
 
                 IconButton(onClick = {
-                    Log.i("ShoutsScreen", "Search button clicked")
-                    viewModel.searchShouts()
                     focusManager.clearFocus()
+                    viewModel.searchShouts(navController)
 
                 }) {
                     Icon(Icons.Default.Search, contentDescription = "Search")
@@ -168,7 +168,6 @@ fun ShoutsScreen(
             LazyColumn(
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
-                    //.padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 0.dp)
                     .fillMaxSize(),
                 contentPadding = PaddingValues(vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),

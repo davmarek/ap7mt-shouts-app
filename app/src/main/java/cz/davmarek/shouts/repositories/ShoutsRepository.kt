@@ -24,5 +24,9 @@ class ShoutsRepository(private val api: ShoutsApi) {
     suspend fun deleteShout(id: String) {
         return api.deleteShout(id)
     }
-    
+
+    suspend fun searchShouts(searchQuery: String): List<Shout> {
+        return api.searchShouts(searchQuery)
+    }
+
 }

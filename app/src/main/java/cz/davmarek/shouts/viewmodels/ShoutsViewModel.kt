@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import cz.davmarek.shouts.api.RetrofitInstance
 import cz.davmarek.shouts.models.Shout
 import cz.davmarek.shouts.models.ShoutUser
@@ -76,8 +77,14 @@ class ShoutsViewModel(mock: Boolean = false) : ViewModel() {
     }
 
 
-    fun searchShouts() {
-        viewModelScope.launch {
+    fun searchShouts(navController: NavController?) {
+        if(_viewState.value.search.isEmpty()){
+            return
+        }
+
+        navController?.navigate("ShoutSearchScreen/${_viewState.value.search}")
+
+        /*viewModelScope.launch {
             _viewState.update { it.copy(isLoading = true) }
             try {
                 val shouts = shoutsRepository.getShouts()
@@ -96,7 +103,7 @@ class ShoutsViewModel(mock: Boolean = false) : ViewModel() {
             _viewState.update { it.copy(isLoading = false) }
 
 
-        }
+        }*/
     }
 
 

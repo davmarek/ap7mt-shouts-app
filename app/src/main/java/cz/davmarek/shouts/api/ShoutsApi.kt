@@ -17,6 +17,9 @@ interface ShoutsApi {
     @GET("shouts/{id}")
     suspend fun getShout(@Path(value = "id", encoded = true) id: String): Shout
 
+    @GET("shouts/search")
+    suspend fun searchShouts(@Query(value = "query", encoded = true) query: String): List<Shout>
+
 
     @POST("shouts")
     suspend fun createShout(

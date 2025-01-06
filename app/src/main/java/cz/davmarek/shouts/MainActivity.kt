@@ -12,8 +12,10 @@ import cz.davmarek.shouts.viewmodels.LoginViewModel
 import cz.davmarek.shouts.viewmodels.ShoutCreateViewModel
 import cz.davmarek.shouts.viewmodels.ShoutDetailViewModel
 import cz.davmarek.shouts.viewmodels.ShoutEditViewModel
+import cz.davmarek.shouts.viewmodels.ShoutSearchViewModel
 import cz.davmarek.shouts.viewmodels.ShoutsViewModel
 import cz.davmarek.shouts.viewmodels.UserDetailViewModel
+import cz.davmarek.shouts.viewstates.ShoutSearchViewState
 
 class MainActivity : ComponentActivity() {
 
@@ -23,6 +25,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var shoutCreateViewModel: ShoutCreateViewModel
     private lateinit var shoutEditViewModel: ShoutEditViewModel
     private lateinit var userDetailViewModel: UserDetailViewModel
+    private lateinit var shoutSearchViewModel: ShoutSearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -37,6 +40,7 @@ class MainActivity : ComponentActivity() {
         shoutDetailViewModel = ViewModelProvider(this)[ShoutDetailViewModel::class.java]
         shoutCreateViewModel = ViewModelProvider(this)[ShoutCreateViewModel::class.java]
         shoutEditViewModel = ViewModelProvider(this)[ShoutEditViewModel::class.java]
+        shoutSearchViewModel = ViewModelProvider(this)[ShoutSearchViewModel::class.java]
         userDetailViewModel = ViewModelProvider(this)[UserDetailViewModel::class.java]
 
 
@@ -55,6 +59,7 @@ class MainActivity : ComponentActivity() {
                     shoutDetailViewModel = shoutDetailViewModel,
                     shoutCreateViewModel = shoutCreateViewModel,
                     shoutEditViewModel = shoutEditViewModel,
+                    shoutSearchViewModel = shoutSearchViewModel,
                     userDetailViewModel = userDetailViewModel
                 )
             }

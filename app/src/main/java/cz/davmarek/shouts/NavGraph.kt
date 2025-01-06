@@ -8,12 +8,14 @@ import cz.davmarek.shouts.ui.screens.LoginScreen
 import cz.davmarek.shouts.ui.screens.ShoutCreateScreen
 import cz.davmarek.shouts.ui.screens.ShoutDetailScreen
 import cz.davmarek.shouts.ui.screens.ShoutEditScreen
+import cz.davmarek.shouts.ui.screens.ShoutSearchScreen
 import cz.davmarek.shouts.ui.screens.ShoutsScreen
 import cz.davmarek.shouts.ui.screens.UserDetailScreen
 import cz.davmarek.shouts.viewmodels.LoginViewModel
 import cz.davmarek.shouts.viewmodels.ShoutCreateViewModel
 import cz.davmarek.shouts.viewmodels.ShoutDetailViewModel
 import cz.davmarek.shouts.viewmodels.ShoutEditViewModel
+import cz.davmarek.shouts.viewmodels.ShoutSearchViewModel
 import cz.davmarek.shouts.viewmodels.ShoutsViewModel
 import cz.davmarek.shouts.viewmodels.UserDetailViewModel
 
@@ -26,6 +28,7 @@ fun AppNavGraph(
     shoutDetailViewModel: ShoutDetailViewModel,
     shoutCreateViewModel: ShoutCreateViewModel,
     shoutEditViewModel: ShoutEditViewModel,
+    shoutSearchViewModel: ShoutSearchViewModel,
     userDetailViewModel: UserDetailViewModel
 ) {
     NavHost(
@@ -52,6 +55,15 @@ fun AppNavGraph(
                 navController = navController,
                 viewModel = shoutDetailViewModel,
                 shoutId = shoutId
+            )
+        }
+
+        composable("ShoutSearchScreen/{searchQuery}") { backStackEntry ->
+            val searchQuery = backStackEntry.arguments?.getString("searchQuery") ?: ""
+            ShoutSearchScreen(
+                navController = navController,
+                viewModel = shoutSearchViewModel,
+                searchQuery = searchQuery
             )
         }
 
