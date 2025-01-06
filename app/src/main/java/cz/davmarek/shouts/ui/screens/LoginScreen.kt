@@ -52,7 +52,6 @@ import cz.davmarek.shouts.SessionManager
 import cz.davmarek.shouts.ui.components.NavigationBackButton
 import cz.davmarek.shouts.viewmodels.LoginViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     navController: NavController?,
@@ -68,28 +67,17 @@ fun LoginScreen(
 
     LaunchedEffect(viewState.value.shouldNavigateToMain) {
         if (viewState.value.shouldNavigateToMain) {
-            Log.d("LoginScreen", "LaunchedEffect: navigate to ShoutsScreen")
+            viewModel.setShouldNavigateToMain(false);
+            viewModel.clearFields()
+
+            // navigate to shouts screen
             navController?.navigate("ShoutsScreen"){
                 popUpTo("LoginScreen") { inclusive = true }
             }
         }
     }
 
-    Scaffold(
-        /*topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    NavigationBackButton { navController?.popBackStack() }
-                },
-                title = {
-                    Text(
-                        text = "Enter your details",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-            )
-        },*/
-    ) { innerPadding ->
+    Scaffold { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

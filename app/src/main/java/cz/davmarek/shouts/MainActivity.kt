@@ -11,7 +11,10 @@ import cz.davmarek.shouts.ui.theme.ShoutsTheme
 import cz.davmarek.shouts.viewmodels.LoginViewModel
 import cz.davmarek.shouts.viewmodels.ShoutCreateViewModel
 import cz.davmarek.shouts.viewmodels.ShoutDetailViewModel
+import cz.davmarek.shouts.viewmodels.ShoutEditViewModel
 import cz.davmarek.shouts.viewmodels.ShoutsViewModel
+import cz.davmarek.shouts.viewmodels.UserDetailViewModel
+import cz.davmarek.shouts.viewstates.UserDetailViewState
 
 class MainActivity : ComponentActivity() {
 
@@ -19,6 +22,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var shoutsViewModel: ShoutsViewModel
     private lateinit var shoutDetailViewModel: ShoutDetailViewModel
     private lateinit var shoutCreateViewModel: ShoutCreateViewModel
+    private lateinit var shoutEditViewModel: ShoutEditViewModel
+    private lateinit var userDetailViewModel: UserDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -32,6 +37,8 @@ class MainActivity : ComponentActivity() {
         shoutsViewModel = ViewModelProvider(this)[ShoutsViewModel::class.java]
         shoutDetailViewModel = ViewModelProvider(this)[ShoutDetailViewModel::class.java]
         shoutCreateViewModel = ViewModelProvider(this)[ShoutCreateViewModel::class.java]
+        shoutEditViewModel = ViewModelProvider(this)[ShoutEditViewModel::class.java]
+        userDetailViewModel = ViewModelProvider(this)[UserDetailViewModel::class.java]
 
 
         val startDestination = if (token.isNullOrEmpty()) "LoginScreen" else "ShoutsScreen"
@@ -47,7 +54,9 @@ class MainActivity : ComponentActivity() {
                     loginViewModel = loginViewModel,
                     shoutsViewModel = shoutsViewModel,
                     shoutDetailViewModel = shoutDetailViewModel,
-                    shoutCreateViewModel = shoutCreateViewModel
+                    shoutCreateViewModel = shoutCreateViewModel,
+                    shoutEditViewModel = shoutEditViewModel,
+                    userDetailViewModel = userDetailViewModel
                 )
             }
         }

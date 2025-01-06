@@ -3,16 +3,18 @@ package cz.davmarek.shouts.viewstates
 import android.content.Context
 import cz.davmarek.shouts.models.Shout
 
-data class ShoutDetailViewState(
+data class ShoutEditViewState(
     // state variables
     val isLoading: Boolean = false,
-    val openDeleteDialog: Boolean = false,
+    val shouldClose: Boolean = false,
 
     // model related
-    val shoutId: String = "",
+    // val shoutId: String = "",
     val shout: Shout? = null,
-    val isShoutMine: Boolean = false,
+
+    // form
+    val text: String = "",
 
     // context
-    val context: Context? = null
-)
+    val context: Context? = null,
+    )

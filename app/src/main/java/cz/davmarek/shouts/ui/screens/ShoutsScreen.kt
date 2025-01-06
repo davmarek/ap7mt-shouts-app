@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import cz.davmarek.shouts.SessionManager
 import cz.davmarek.shouts.models.Shout
+import cz.davmarek.shouts.ui.components.ShoutItem
 import cz.davmarek.shouts.viewmodels.ShoutsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,7 +64,7 @@ fun ShoutsScreen(
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         val token = SessionManager(context).getAuthToken()
-        if(token == null){
+        if (token == null) {
             navController?.navigate("LoginScreen") {
                 popUpTo("ShoutsScreen") { inclusive = true }
             }
@@ -99,23 +101,21 @@ fun ShoutsScreen(
                     icon = {
                         Icon(Icons.Default.Home, contentDescription = "Home")
                     },
-                    label = { Text("Check") },
+                    label = { Text("Home") },
                     selected = true,
-                    onClick = { /* do something */ }
+                    onClick = { }
 
                 )
 
                 NavigationBarItem(
                     icon = {
-                        Icon(Icons.Default.Delete, contentDescription = "Logout")
+                        Icon(Icons.Default.Person, contentDescription = "Profile")
                     },
-                    label = { Text("Logout") },
+                    label = { Text("Profile") },
                     selected = false,
                     onClick = {
-                        Log.i("ShoutsScreen", "Clearing token");
-                        SessionManager(context).clearAuthToken()
-                        navController?.navigate("LoginScreen") {
-                            popUpTo("ShoutsScreen") { inclusive = true }
+                        SessionManager(context).getUserId().let {
+                            navController?.navigate("UserDetailScreen/$it")
                         }
                     }
 
@@ -192,40 +192,7 @@ fun ShoutsScreen(
     }
 }
 
-@Composable
-fun ShoutItem(
-    shout: Shout,
-    onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp, 16.dp)
-        ) {
 
-            Text(
-                text = "@${shout.user.username}",
-                modifier = Modifier
-                    .fillMaxWidth(),
-                style = MaterialTheme.typography.titleSmall
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = shout.text,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
-    }
-}
 
 
 @Preview

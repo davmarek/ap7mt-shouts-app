@@ -42,24 +42,6 @@ class ShoutCreateViewModel() : ViewModel() {
         }
     }
 
-
-   /* fun fetchShouts() {
-        viewModelScope.launch {
-
-            setIsLoading(true)
-            try {
-                val shouts = shoutsRepository.getShouts()
-                setShouts(shouts)
-                showToast("Shouts fetched")
-            } catch (e: Exception) {
-                Log.e("ShoutsViewModel", "Error fetching shouts ${e.toString()}", e)
-                showToast("Fetching error $e")
-            }
-            setIsLoading(false)
-        }
-
-    }*/
-
     private fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
         _viewState.value.context?.let {
             Toast.makeText(it, message, duration).show()
@@ -73,7 +55,10 @@ class ShoutCreateViewModel() : ViewModel() {
     }
 
     fun onSubmit() {
-        if (viewState.value.text.isEmpty()) {
+
+        val newText = viewState.value.text.trim()
+
+        if (newText.isEmpty()) {
             showToast("Text cannot be empty")
             return
         }
@@ -81,7 +66,7 @@ class ShoutCreateViewModel() : ViewModel() {
         viewModelScope.launch {
             setIsLoading(true)
             try {
-                shoutsRepository.createShout(viewState.value.text)
+                shoutsRepository.createShout(newText)
                 _viewState.update {
                     it.copy(shouldClose = true)
                 }

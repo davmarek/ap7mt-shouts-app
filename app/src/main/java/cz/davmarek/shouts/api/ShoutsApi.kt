@@ -5,8 +5,10 @@ import cz.davmarek.shouts.models.Shout
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ShoutsApi {
     @GET("shouts")
@@ -20,6 +22,12 @@ interface ShoutsApi {
     suspend fun createShout(
         @Body request: CreateShoutRequest
     ): Shout
+
+    @PATCH("shouts/{id}")
+    suspend fun updateShout(
+        @Path(value = "id", encoded = true) id: String,
+        @Query("text", encoded = true) text: String
+    )
 
     @DELETE("shouts/{id}")
     suspend fun deleteShout(@Path(value = "id", encoded = true) id: String)

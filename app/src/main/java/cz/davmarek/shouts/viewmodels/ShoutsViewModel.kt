@@ -59,7 +59,6 @@ class ShoutsViewModel(mock: Boolean = false) : ViewModel() {
             try {
                 val shouts = shoutsRepository.getShouts()
                 setShouts(shouts)
-                showToast("Shouts fetched")
             } catch (e: Exception) {
                 Log.e("ShoutsViewModel", "Error fetching shouts ${e}", e)
                 showToast("Fetching error $e")

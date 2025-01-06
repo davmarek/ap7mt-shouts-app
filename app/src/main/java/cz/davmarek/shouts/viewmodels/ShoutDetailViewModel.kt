@@ -22,7 +22,7 @@ import java.util.Date
 class ShoutDetailViewModel(mock: Boolean = false) : ViewModel() {
     private val shoutsRepository = ShoutsRepository(RetrofitInstance.shoutsApi)
 
-    private val _viewState = MutableStateFlow(ShoutDetailViewState(false, ""))
+    private val _viewState = MutableStateFlow(ShoutDetailViewState())
     val viewState: StateFlow<ShoutDetailViewState> = _viewState.asStateFlow()
 
     init {

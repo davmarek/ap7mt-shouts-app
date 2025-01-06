@@ -2,16 +2,17 @@ package cz.davmarek.shouts.viewstates
 
 import android.content.Context
 import cz.davmarek.shouts.models.Shout
+import cz.davmarek.shouts.models.User
 
-data class ShoutDetailViewState(
+data class UserDetailViewState(
     // state variables
     val isLoading: Boolean = false,
-    val openDeleteDialog: Boolean = false,
+    val openLogoutDialog: Boolean = false,
 
     // model related
-    val shoutId: String = "",
-    val shout: Shout? = null,
-    val isShoutMine: Boolean = false,
+    val user: User? = null,
+    val shouts: List<Shout> = emptyList(),
+    val mineProfile: Boolean = false,
 
     // context
     val context: Context? = null
